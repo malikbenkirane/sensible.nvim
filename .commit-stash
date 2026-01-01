@@ -1,0 +1,24 @@
+feat(commands): add jujutsu integration and cmdline helpers
+
+Extends the command system with jujutsu version control support and
+enhanced command-line navigation utilities.
+
+Adds SensibleJujutsuDescribe command that writes the current buffer to
+`jj describe --stdin`, enabling commit message composition directly in
+Neovim. This complements the existing SensibleGitCommitAndPush and
+supports teams migrating from Git to jujutsu.
+
+Enhances SensibleCommand by creating two new sub-commands:
+- SensibleCmdlineLastCommand: Opens cmdline window on last cmd
+- SensibleCmdlineBackwardSearch: Opens cmdline window in search
+
+These improve command-line workflow by providing quick access to command
+history without manual navigation through q:.
+
+Adds .commit-stash and .prepare.yaml as workspace metadata files for
+development tooling integration.
+
+Includes commented-out SensibleShiftWidth command framework for future
+tabstop/shiftwidth configuration, and adds inspirational credit
+reference to willhbr's dotfiles.
+
