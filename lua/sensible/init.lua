@@ -2,15 +2,27 @@ local M = {}
 
 M.setup = function(opts)
 
-  -- FIXME --
-  -- vim.api.nvim_create_user_command('SensibleShiftWidth', function(_)
-  --   local columns = tonumber(opt.fargs[1] or "2")
-  --   vim.o.shiftwidth = columns
-  --   vim.o.tabstop = columns
-  -- end, {
-  --   desc = 'Set both shiftwidth and tabstop',
-  --   nargs = '?',
-  -- })
+  vim.api.nvim_create_user_command('SensibleShiftWidth', function(opts)
+    local columns = opts.fargs[1] or "2"
+    vim.cmd('set sw='..columns..' ts='..columns)
+  end, {
+    desc = 'Set both shiftwidth and tabstop',
+    nargs = '?',
+  })
+
+  -- SensibleCursor
+  vim.api.nvim_create_user_command('SensibleGuicursor', function(_)
+    vim.cmd('set guicursor=a:block-Cursor')
+  end, {
+    desc = 'set guicursor to a:block-Cursor'
+  })
+
+  -- SensibleNetrw
+
+  vim.api.nvim_create_user_command('SensibleNetrwFirefoxMacOs', function(_)
+    local firefox = "/Applications/Firefox.app/Contents/MacOS/firefox"
+    vim.g.netrw_browsex_viewer = firefox -- gx
+  end, {})
 
   -- SensibleCommand
 
@@ -20,6 +32,11 @@ M.setup = function(opts)
 
     vim.api.nvim_create_user_command("SensibleCmdlineLastCommand", function()
       local seq = vim.api.nvim_replace_termcodes('q:<Esc>k', true, false, true)
+      vim.api.nvim_feedkeys(seq, 'n', false)
+    end, {})
+
+    vim.api.nvim_create_user_command("SensibleCmdlineDefault", function()
+      local seq = vim.api.nvim_replace_termcodes(':', true, false, true)
       vim.api.nvim_feedkeys(seq, 'n', false)
     end, {})
 
@@ -72,7 +89,13 @@ M.setup = function(opts)
     end,
     ["2space"] = function()
       vim.cmd('SensibleShiftWidth')
-    end
+    end,
+    ["netrw_firefox_macos"] = function()
+      vim.cmd('SensibleNetrwFirefoxMacOs')
+    end,
+    ["a:block-Cursor"] = function()
+      vim.cmd('SensibleGuicursor')
+    end,
   }
   for _, opt in pairs(opts) do
     settings[opt]()
@@ -82,4 +105,5 @@ end
 return M
 
 
--- Inspirational Credits https://codeberg.org/willhbr/dotfiles/src/branch/main/vim/vimrc --
+-- Inspirational Credits
+-- https://codeberg.org/willhbr/dotfiles/src/branch/main/vim/vimrc --
